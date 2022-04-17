@@ -106,9 +106,10 @@ public class RestauranteController {
 
     }
 
-    @GetMapping("/{frete}")
+    @GetMapping("/frete")
     public List<Restaurante> fretes(BigDecimal taxaInicial, BigDecimal taxaFinal) {
 
+        //aplicando esses valores nos params chaves e valor
 
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
