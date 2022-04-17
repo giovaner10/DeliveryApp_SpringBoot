@@ -6,9 +6,12 @@ import com.app.deliveryapp.domain.service.RestauranteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -63,5 +66,33 @@ public class RestauranteController {
 
     }
 
+
+    @PatchMapping("/{idRestaurante}/atualizar")
+    public ResponseEntity<Restaurante> atualizarCampo(@PathVariable Long idRestaurante,
+                                                 @RequestBody Map<String, Object> campos) {
+
+        if(!restauranteRepository.existsById(idRestaurante)){
+            return ResponseEntity.notFound().build();
+        }else {
+            Restaurante restauranteAtualizar = restauranteRepository.getById(idRestaurante);
+            restauranteAtualizar.setId(idRestaurante);
+
+            merge(restauranteAtualizar, campos);
+
+            Restaurante restauranteUpdate = restauranteRepository.save(restauranteAtualizar);
+            return ResponseEntity.ok(restauranteUpdate);
+        }
+    }
+
+   private void merge(Restaurante restauranteDestino, Map<String, Object> campos){
+
+        campos.forEach((nomePropiedade, valorPropiedade)->{
+            Field field = ReflectionUtils.findField(Restaurante.class, nomePropiedade);
+            field.setAccessible(true);
+
+            ReflectionUtils.setField(field, restauranteDestino, valorPropiedade);
+
+       });
+    }
 
 }

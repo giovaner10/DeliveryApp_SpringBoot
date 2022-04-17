@@ -44,13 +44,13 @@ public class EstadoController {
     }
 
     @PutMapping("/{idEstado}/atualizar")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long idEstado, @RequestBody Estado Estado) {
+    public ResponseEntity<Estado> atualizar(@PathVariable Long idEstado, @RequestBody Estado estado) {
 
         if(!estadoRepository.existsById(idEstado)){
             return ResponseEntity.notFound().build();
         }
-        Estado.setId(idEstado);
-        Estado EstadoUpdate = estadoRepository.save(Estado);
+        estado.setId(idEstado);
+        Estado EstadoUpdate = estadoRepository.save(estado);
         return  ResponseEntity.ok(EstadoUpdate);
     }
 
