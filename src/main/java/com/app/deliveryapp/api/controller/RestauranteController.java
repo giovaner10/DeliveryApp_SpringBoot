@@ -49,12 +49,12 @@ public class RestauranteController {
     @PutMapping("/{idRestaurante}/atualizar")
     public ResponseEntity<Restaurante> atualizar(@PathVariable Long idRestaurante, @RequestBody Restaurante restaurante) {
 
-        if(!restauranteRepository.existsById(idRestaurante)){
+        if (!restauranteRepository.existsById(idRestaurante)) {
             return ResponseEntity.notFound().build();
         }
         restaurante.setId(idRestaurante);
         Restaurante restauranteUpdate = restauranteRepository.save(restaurante);
-        return  ResponseEntity.ok(restauranteUpdate);
+        return ResponseEntity.ok(restauranteUpdate);
     }
 
 
@@ -69,11 +69,11 @@ public class RestauranteController {
 
     @PatchMapping("/{idRestaurante}/atualizar")
     public ResponseEntity<Restaurante> atualizarCampo(@PathVariable Long idRestaurante,
-                                                 @RequestBody Map<String, Object> campos) {
+                                                      @RequestBody Map<String, Object> campos) {
 
-        if(!restauranteRepository.existsById(idRestaurante)){
+        if (!restauranteRepository.existsById(idRestaurante)) {
             return ResponseEntity.notFound().build();
-        }else {
+        } else {
             Restaurante restauranteAtualizar = restauranteRepository.getById(idRestaurante);
             restauranteAtualizar.setId(idRestaurante);
 
@@ -84,15 +84,15 @@ public class RestauranteController {
         }
     }
 
-   private void merge(Restaurante restauranteDestino, Map<String, Object> campos){
+    private void merge(Restaurante restauranteDestino, Map<String, Object> campos) {
 
-        campos.forEach((nomePropiedade, valorPropiedade)->{
+        campos.forEach((nomePropiedade, valorPropiedade) -> {
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropiedade);
             field.setAccessible(true);
 
             ReflectionUtils.setField(field, restauranteDestino, valorPropiedade);
 
-       });
+        });
     }
 
 }
