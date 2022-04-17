@@ -3,6 +3,7 @@ package com.app.deliveryapp.api.controller;
 import com.app.deliveryapp.domain.repository.RestauranteRepository;
 import com.app.deliveryapp.domain.model.Restaurante;
 import com.app.deliveryapp.domain.service.RestauranteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -84,15 +86,33 @@ public class RestauranteController {
         }
     }
 
-    private void merge(Restaurante restauranteDestino, Map<String, Object> campos) {
+    private void merge(Restaurante restauranteDestino, Map<String, Object> dadosOrigem) {
 
-        campos.forEach((nomePropiedade, valorPropiedade) -> {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+
+        dadosOrigem.forEach((nomePropiedade, valorPropiedade) -> {
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropiedade);
             field.setAccessible(true);
 
+           // Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+            //System.out.println(novoValor);
+
             ReflectionUtils.setField(field, restauranteDestino, valorPropiedade);
 
+
         });
+
+
     }
+
+    @GetMapping("/{frete}")
+    public List<Restaurante> fretes(BigDecimal taxaInicial, BigDecimal taxaFinal) {
+
+
+        return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+    }
+
+
 
 }
