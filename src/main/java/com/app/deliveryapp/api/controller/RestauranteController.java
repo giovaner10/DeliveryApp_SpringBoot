@@ -5,6 +5,7 @@ import com.app.deliveryapp.domain.model.Restaurante;
 import com.app.deliveryapp.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -54,6 +55,8 @@ public class RestauranteController {
         if (!restauranteRepository.existsById(idRestaurante)) {
             return ResponseEntity.notFound().build();
         }
+        Optional<Restaurante> restauranteAntigo = restauranteRepository.findById(idRestaurante);
+        BeanUtils.copyProperties(restaurante, restauranteAntigo, "formaPagamento", "id");
         restaurante.setId(idRestaurante);
         Restaurante restauranteUpdate = restauranteRepository.save(restaurante);
         return ResponseEntity.ok(restauranteUpdate);
@@ -95,7 +98,7 @@ public class RestauranteController {
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropiedade);
             field.setAccessible(true);
 
-           // Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+            // Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
             //System.out.println(novoValor);
 
             ReflectionUtils.setField(field, restauranteDestino, valorPropiedade);
