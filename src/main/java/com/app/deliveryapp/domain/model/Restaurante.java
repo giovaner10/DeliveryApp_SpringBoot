@@ -43,7 +43,7 @@ public class Restaurante {
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_cozinha")
     @NotNull
     private Cozinha cozinha;
@@ -52,6 +52,7 @@ public class Restaurante {
     @JsonIgnore
     private Endereco endereco;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 
