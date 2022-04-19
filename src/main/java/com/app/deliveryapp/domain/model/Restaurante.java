@@ -31,7 +31,6 @@ public class Restaurante {
 
     @CreationTimestamp
     @Column(nullable = false)
-    @JsonIgnore
     private OffsetDateTime dataCadastro;
 
     @UpdateTimestamp

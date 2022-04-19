@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -20,4 +21,5 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     @Query("from Restaurante  where nome like  %:buscado%")
     List<Restaurante> buscarPorNome(@Param("buscado") String nome);
 
+    List<Restaurante> findByDataCadastroBetween(OffsetDateTime dataInicio, OffsetDateTime dataFim);
 }

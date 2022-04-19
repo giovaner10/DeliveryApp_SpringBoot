@@ -6,6 +6,7 @@ import com.app.deliveryapp.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -117,6 +119,20 @@ public class RestauranteController {
 
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
+
+
+    @GetMapping("/datas")
+    public List<Restaurante> datas(@RequestParam("inicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                               OffsetDateTime taxaInicial  ,
+                                   @RequestParam("final") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                           OffsetDateTime taxaFinal) {
+
+        //aplicando esses valores nos params chaves e valor
+
+        return restauranteRepository.findByDataCadastroBetween(taxaInicial, taxaFinal);
+    }
+    //colocar essa data no formato do offsetdate time hahha
+
 
 
 
