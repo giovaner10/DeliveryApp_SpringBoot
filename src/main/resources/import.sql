@@ -45,3 +45,5 @@ insert into produto (nome, descricao, preco, ativo, id_restaurante) values ('San
 
 insert into produto (nome, descricao, preco, ativo, id_restaurante) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
+insert into restaurnte_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1);
+
