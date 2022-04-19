@@ -23,7 +23,7 @@ public class Cidade {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "ID_estado")
+    @JoinColumn(name = "estado_id")
     private Estado estado;
 
 }
