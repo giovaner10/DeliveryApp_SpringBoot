@@ -18,7 +18,7 @@ import java.util.Optional;
 public class CidadeController {
 
     private CidadeRepository cidadeRepository;
-    private CidadeService CidadeService;
+    private CidadeService cidadeService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -27,13 +27,8 @@ public class CidadeController {
     }
 
     @GetMapping("/{idCidade}")
-    public ResponseEntity<Optional<Cidade>> buscar(@PathVariable Long idCidade) {
-
-        if (cidadeRepository.existsById(idCidade)) {
-            Optional<Cidade> cidade = cidadeRepository.findById(idCidade);
-            return ResponseEntity.ok(cidade);
-        }
-        return ResponseEntity.notFound().build();
+    public Cidade buscar(@PathVariable Long idCidade) {
+        return cidadeService.buscarId(idCidade);
     }
 
 
@@ -41,15 +36,14 @@ public class CidadeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cidade salvar(@RequestBody Cidade Cidade) {
 
-        return CidadeService.salvar(Cidade);
+        return cidadeService.salvar(Cidade);
     }
 
     @PutMapping("/{idCidade}/atualizar")
     public ResponseEntity<Cidade> atualizar(@PathVariable Long idCidade, @RequestBody Cidade cidade) {
 
-        if(!cidadeRepository.existsById(idCidade)){
-            return ResponseEntity.notFound().build();
-        }
+        cidadeService.buscarId(idCidade);
+
         cidade.setId(idCidade);
         Cidade CidadeUpdate = cidadeRepository.save(cidade);
         return  ResponseEntity.ok(CidadeUpdate);
@@ -59,7 +53,7 @@ public class CidadeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long idCidade) {
 
-         CidadeService.deletaCidade(idCidade);
+        cidadeService.deletaCidade(idCidade);
 
     }
 
