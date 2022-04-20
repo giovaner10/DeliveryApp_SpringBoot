@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cozinha")
@@ -26,13 +25,14 @@ public class CozinhaController {
     }
 
     @GetMapping("/{idCozinha}")
-    public ResponseEntity<Optional<Cozinha>> buscar(@PathVariable Long idCozinha) {
+    public Cozinha buscar(@PathVariable Long idCozinha) {
 
-        if (cozinhaRepository.existsById(idCozinha)) {
+        return cozinhaService.buscarId(idCozinha);
+        /*if (cozinhaRepository.existsById(idCozinha)) {
             Optional<Cozinha> cozinha = cozinhaRepository.findById(idCozinha);
             return ResponseEntity.ok(cozinha);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();*/
     }
 
 
@@ -46,9 +46,8 @@ public class CozinhaController {
     @PutMapping("/{idCozinha}/atualizar")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Long idCozinha, @RequestBody Cozinha cozinha) {
 
-        if(!cozinhaRepository.existsById(idCozinha)){
-            return ResponseEntity.notFound().build();
-        }
+         cozinhaService.buscarId(idCozinha);
+
         cozinha.setId(idCozinha);
         Cozinha cozinhaUpdate = cozinhaRepository.save(cozinha);
         return  ResponseEntity.ok(cozinhaUpdate);
