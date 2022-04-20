@@ -26,13 +26,10 @@ public class EstadoController {
     }
 
     @GetMapping("/{idEstado}")
-    public ResponseEntity<Optional<Estado>> buscar(@PathVariable Long idEstado) {
+    public Estado buscar(@PathVariable Long idEstado) {
 
-        if (estadoRepository.existsById(idEstado)) {
-            Optional<Estado> estado = estadoRepository.findById(idEstado);
-            return ResponseEntity.ok(estado);
-        }
-        return ResponseEntity.notFound().build();
+        return estadoService.buscarId(idEstado);
+
     }
 
 
@@ -46,9 +43,7 @@ public class EstadoController {
     @PutMapping("/{idEstado}/atualizar")
     public ResponseEntity<Estado> atualizar(@PathVariable Long idEstado, @RequestBody Estado estado) {
 
-        if(!estadoRepository.existsById(idEstado)){
-            return ResponseEntity.notFound().build();
-        }
+        estadoService.buscarId(idEstado);
         estado.setId(idEstado);
         Estado EstadoUpdate = estadoRepository.save(estado);
         return  ResponseEntity.ok(EstadoUpdate);
