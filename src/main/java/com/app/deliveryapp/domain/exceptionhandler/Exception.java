@@ -11,21 +11,23 @@ import java.util.List;
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Exception {
+public class Exception  {
     private Integer status;
     private String type;
     private  String title;
     private String detail;
+    private OffsetDateTime dataOcourence;
 
 
-    private List<Campo> campos;
+    private List<Field> fields;
 
 
     @Data
     @AllArgsConstructor
-    public static class Campo{
-        private String nome;
-        private String mensagem;
+    @Builder
+    public static class Field{
+        private String name;
+        private String UserMesage;
 
 
     }
