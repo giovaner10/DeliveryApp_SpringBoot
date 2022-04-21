@@ -9,7 +9,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -38,10 +41,12 @@ public class Restaurante {
     @JsonIgnore
     private OffsetDateTime dataAtualizacao;
 
-    @NotNull
+    @DecimalMin("5")
+    //@PositiveOrZero
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
+    @Valid
     @ManyToOne
     @JoinColumn(name = "id_cozinha")
     @NotNull
