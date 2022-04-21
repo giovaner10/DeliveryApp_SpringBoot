@@ -13,9 +13,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Exception {
     private Integer status;
-    private OffsetDateTime dataHora;
-    private  String titulo;
-    private String menssagem;
+    private String type;
+    private  String title;
+    private String detail;
+
+
     private List<Campo> campos;
 
 
