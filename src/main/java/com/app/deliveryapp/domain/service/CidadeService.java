@@ -1,5 +1,6 @@
 package com.app.deliveryapp.domain.service;
 
+import com.app.deliveryapp.domain.exceptionhandler.EntidadeEmUsoException;
 import com.app.deliveryapp.domain.exceptionhandler.EntidadeNaoEncontradaException;
 import com.app.deliveryapp.domain.model.Cidade;
 import com.app.deliveryapp.domain.repository.CidadeRepository;
@@ -18,7 +19,7 @@ public class CidadeService {
 
     public Cidade buscarId(Long id){
         return cidadeRepository.findById(id)
-                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO));
+                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO, id));
     }
     public Cidade salvar(Cidade cidade){
         estadoService.buscarId(cidade.getEstado().getId());
@@ -33,7 +34,7 @@ public class CidadeService {
             cidadeRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException E){
-            throw new EntidadeNaoEncontradaException("Não foi possivel a deleção, pois esse item se encontra associado " +
+            throw new EntidadeEmUsoException("Não foi possivel a deleção, pois esse item se encontra associado " +
                     "a outra tabela do seu banco de dados");
         }
     }

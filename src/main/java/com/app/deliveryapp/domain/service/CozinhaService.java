@@ -20,7 +20,7 @@ public class CozinhaService {
 
     public Cozinha buscarId(Long id){
         return cozinhaRepository.findById(id)
-                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO));
+                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO, id));
     }
 
     public Cozinha salvar(Cozinha cozinha){

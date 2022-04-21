@@ -1,5 +1,6 @@
 package com.app.deliveryapp.domain.service;
 
+import com.app.deliveryapp.domain.exceptionhandler.EntidadeEmUsoException;
 import com.app.deliveryapp.domain.exceptionhandler.EntidadeNaoEncontradaException;
 import com.app.deliveryapp.domain.repository.RestauranteRepository;
 import com.app.deliveryapp.domain.model.Restaurante;
@@ -17,7 +18,7 @@ public class RestauranteService {
 
     public Restaurante buscarId(Long id){
         return restauranteRepository.findById(id)
-                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO));
+                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO, id));
     }
 
     public Restaurante salvar(Restaurante cozinha){
@@ -32,7 +33,7 @@ public class RestauranteService {
             restauranteRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException E){
-            throw new EntidadeNaoEncontradaException("Não foi possivel pois esse item se encontra associado " +
+            throw new EntidadeEmUsoException("Não foi possivel pois esse item se encontra associado " +
                     "a outra tabela do seu banco de dados");
         }
     }
