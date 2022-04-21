@@ -15,6 +15,7 @@ public class Exception {
     private Integer status;
     private OffsetDateTime dataHora;
     private  String titulo;
+    private String menssagem;
     private List<Campo> campos;
 
 

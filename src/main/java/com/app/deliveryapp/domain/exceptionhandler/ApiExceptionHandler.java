@@ -16,26 +16,30 @@ import java.time.OffsetDateTime;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(java.lang.Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+       body = Exception.builder()
+               .titulo(ex.getLocalizedMessage())
+               .menssagem(status.getReasonPhrase())
+               .status(status.value())
+               .dataHora(OffsetDateTime.now())
+               .build();
+
+
+        return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
 
     @ExceptionHandler({EntidadeEmUsoException.class})
     public ResponseEntity<Object> negocioException(EntidadeEmUsoException ex, WebRequest request){
-        Exception exception = Exception.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
-                .dataHora(OffsetDateTime.now())
-                .titulo(ex.getLocalizedMessage())
-                .build();
-        return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        Exception exception = Exception.builder().build();
+        return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.CONFLICT, request);
 
     }
 
     @ExceptionHandler({EntidadeNaoEncontradaException.class})
     public ResponseEntity<Object> exTest(EntidadeNaoEncontradaException ex, WebRequest request){
-        Exception exception = Exception.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
-                .dataHora(OffsetDateTime.now())
-                .titulo(ex.getLocalizedMessage())
-                .build();
-        return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        Exception exception = Exception.builder().build();
+        return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 
     }
 }
