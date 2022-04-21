@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,15 +28,16 @@ public class CidadeController {
 
     @GetMapping("/{idCidade}")
     public Cidade buscar(@PathVariable Long idCidade) {
+
         return cidadeService.buscarId(idCidade);
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cidade salvar(@RequestBody Cidade Cidade) {
+    public Cidade salvar(@RequestBody @Valid Cidade cidade) {
 
-        return cidadeService.salvar(Cidade);
+        return cidadeService.salvar(cidade);
     }
 
     @PutMapping("/{idCidade}/atualizar")

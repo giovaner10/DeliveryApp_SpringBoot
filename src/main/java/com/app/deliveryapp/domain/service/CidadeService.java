@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class CidadeService {
@@ -19,7 +21,7 @@ public class CidadeService {
 
     public Cidade buscarId(Long id){
         return cidadeRepository.findById(id)
-                .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO, id));
+               .orElseThrow(()-> new EntidadeNaoEncontradaException(NÃO_ECONTRADO, id));
     }
     public Cidade salvar(Cidade cidade){
         estadoService.buscarId(cidade.getEstado().getId());
@@ -29,13 +31,15 @@ public class CidadeService {
     public void deletaCidade(Long id){
 
        buscarId(id);
+        cidadeRepository.deleteById(id);
 
-        try {
+
+        /*try {
             cidadeRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException E){
-            throw new EntidadeEmUsoException("Não foi possivel a deleção, pois esse item se encontra associado " +
-                    "a outra tabela do seu banco de dados");
-        }
+            //throw new EntidadeEmUsoException("Não foi possivel a deleção, pois esse item se encontra associado " +
+                //    "a outra tabela do seu banco de dados");
+        }*/
     }
 }

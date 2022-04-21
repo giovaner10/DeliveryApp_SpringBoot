@@ -29,6 +29,8 @@ public class EstadoService {
     public void deletaEstado(Long id){
 
         buscarId(id);
+
+
         try {
             estadoRepository.deleteById(id);
         }
