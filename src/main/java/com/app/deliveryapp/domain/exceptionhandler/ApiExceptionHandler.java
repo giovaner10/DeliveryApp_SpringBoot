@@ -8,6 +8,9 @@ import org.apache.commons.lang3.event.EventUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.modelmapper.spi.PropertyType;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +26,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 @AllArgsConstructor
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(java.lang.Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -46,12 +53,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         List<Exception.Field> problemField = bindingResult
                 .getFieldErrors()
                 .stream()
-                .map(fieldError ->
-                        Exception.Field.builder()
-                        .name(fieldError.getField())
-                        .UserMesage(fieldError.getDefaultMessage())
-                        .build()
-                )
+                .map(fieldError -> {
+
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    return Exception.Field.builder()
+                            .name(fieldError.getField())
+                            .UserMesage(message)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         Exception exception = createExcptionBuilder(status, ExceptionType.DADOS_INVALIDOS, detail)
